@@ -22,7 +22,6 @@ const ProviderStarWars = ({ children }) => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.results);
         setArrayPlanetas(response.results);
 
         setData(response.results);
