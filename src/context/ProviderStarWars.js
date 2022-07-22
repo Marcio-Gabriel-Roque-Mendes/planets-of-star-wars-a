@@ -8,6 +8,7 @@ const ProviderStarWars = ({ children }) => {
   const [inputText, setInputText] = useState('');
   const [filtros, setFiltros] = useState([]);
   const [data, setData] = useState([]);
+  // const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   const contextValue = { /* Objeto contextValue */
     arrayPlanetas,
@@ -16,6 +17,8 @@ const ProviderStarWars = ({ children }) => {
     setInputText,
     filtros,
     setFiltros,
+    // filterByNumericValues,
+    // setFilterByNumericValues,
   };
 
   const getStarWarsPlanets = () => { // SO CHAMADA A API E SALVAR NO ESTADO (COM DUAS FORMAS DE FAZER)

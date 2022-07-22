@@ -3,13 +3,23 @@ import ContextStarWars from '../context/ContextStarWars';
 // import PropTypes from 'prop-types';
 
 function Table() {
+  const options = ['population', 'orbital_period',
+    'rotation_period', 'surface_water', 'diameter'];
+
   const [coluna, setColuna] = useState('population');
   const [operador, setOperador] = useState('maior que');
   const [valor, setValor] = useState(0);
+  const [select, setSelect] = useState(options);
 
   const valorDoContexto = useContext(ContextStarWars);
-  const { setInputText, inputText, setFiltros } = valorDoContexto;
+  const { setInputText, inputText /* filtros */, setFiltros,
+  } = valorDoContexto;
   // console.log(valorDoContexto.arrayPlanetas.map((planet) => planet), 'valores');
+
+  const handleFilter = () => {
+    setFiltros((prevState) => ([...prevState, { coluna, operador, valor }]));
+    setSelect(select.filter((opcao) => opcao !== coluna));
+  };
 
   return (
     <div>
@@ -28,11 +38,16 @@ function Table() {
           value={ coluna }
           onChange={ (event) => setColuna(event.target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
-          <option value="diameter">diameter</option>
+          {select.map((option) => (
+            <option
+              data-testid={ `option-${option}` }
+              key={ option }
+              value={ option }
+            >
+              {option}
+
+            </option>
+          ))}
 
         </select>
       </label>
@@ -64,8 +79,7 @@ function Table() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => (
-          setFiltros((prevState) => ([...prevState, { coluna, operador, valor }]))) }
+        onClick={ () => handleFilter() }
       >
         Filtrar
       </button>
@@ -121,7 +135,7 @@ function Table() {
               .filter((item) => item.name.includes(valorDoContexto.inputText))
               .map((planeta) => (
                 <tr key={ planeta.name }>
-                  <td>{planeta.name}</td>
+                  <td data-testid="planeta-name">{planeta.name}</td>
                   <td>{planeta.rotation_period}</td>
                   <td>{planeta.orbital_period}</td>
                   <td>{planeta.diameter}</td>
