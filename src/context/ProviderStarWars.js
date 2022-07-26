@@ -8,6 +8,7 @@ const ProviderStarWars = ({ children }) => {
   const [inputText, setInputText] = useState('');
   const [filtros, setFiltros] = useState([]);
   const [data, setData] = useState([]);
+  const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
   // const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   const contextValue = { /* Objeto contextValue */
@@ -17,6 +18,8 @@ const ProviderStarWars = ({ children }) => {
     setInputText,
     filtros,
     setFiltros,
+    order,
+    setOrder,
     // filterByNumericValues,
     // setFilterByNumericValues,
   };
@@ -25,9 +28,9 @@ const ProviderStarWars = ({ children }) => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((response) => response.json())
       .then((response) => {
-        setArrayPlanetas(response.results);
+        setArrayPlanetas(response.results.sort((a, b) => a.name.localeCompare(b.name)));
 
-        setData(response.results);
+        setData(response.results.sort((a, b) => a.name.localeCompare(b.name)));
 
         // response.results.map((planet) => setArrayPlanetas((prevState) => [...prevState, planet.name])); //FORMA 1
 
@@ -73,29 +76,35 @@ const ProviderStarWars = ({ children }) => {
   // }, [filtros]);
 
   useEffect(() => {
-    setArrayPlanetas(data);
+    // const handleOrder = () => {
+    //   if (order.sort === 'ASC') {
+    //     order.column.sort((a, b) => a - b);
+    //   } if ((order.sort === 'DESC')) {
+    //     order.column.sort((a, b) => b - a);
+    //   }
+    // };
+
+    let dados = data;
 
     filtros.forEach((filtro) => {
       if (filtro.operador === 'maior que') {
-        const comparacao = arrayPlanetas
+        dados = dados
           .filter((planeta) => Number(planeta[filtro
             .coluna]) > Number(filtro.valor));
-        return setArrayPlanetas(comparacao);
       }
       if (filtro.operador === 'menor que') {
-        const comparacao = arrayPlanetas
+        dados = dados
           .filter((planeta) => Number(planeta[filtro
-            .coluna]) < Number(filtro.valor));
-        return setArrayPlanetas(comparacao);
+            .coluna]) < Number(filtro.valor) && filtro.valor !== 'unknown');
       }
       if (filtro.operador === 'igual a') {
-        const comparacao = arrayPlanetas
+        dados = dados
           .filter((planeta) => Number(planeta[filtro
             .coluna]) === Number(filtro.valor));
-        return setArrayPlanetas(comparacao);
       }
     });
-  }, [filtros]);
+    setArrayPlanetas(dados);
+  }, [filtros/* order */]);
 
   return (
     <ContextStarWars.Provider value={ contextValue }>

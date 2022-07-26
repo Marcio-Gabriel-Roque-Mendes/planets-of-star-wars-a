@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import ContextStarWars from '../context/ContextStarWars';
-// import PropTypes from 'prop-types';
 
 function Table() {
   const options = ['population', 'orbital_period',
@@ -10,16 +9,33 @@ function Table() {
   const [operador, setOperador] = useState('maior que');
   const [valor, setValor] = useState(0);
   const [select, setSelect] = useState(options);
+  // const [orderCollum, setOrderCollum] = useState('population');
+  // const [radio, setRadio] = useState();
 
   const valorDoContexto = useContext(ContextStarWars);
-  const { setInputText, inputText /* filtros */, setFiltros,
+  const { setInputText, inputText, filtros, setFiltros, /* order, setOrder, */
   } = valorDoContexto;
-  // console.log(valorDoContexto.arrayPlanetas.map((planet) => planet), 'valores');
 
   const handleFilter = () => {
     setFiltros((prevState) => ([...prevState, { coluna, operador, valor }]));
-    setSelect(select.filter((opcao) => opcao !== coluna));
+    const filtroDisponiveis = select.filter((opcao) => opcao !== coluna);
+    setSelect(filtroDisponiveis);
+    setColuna(filtroDisponiveis[0]);
   };
+
+  const handleRemoveFilter = (colunaDeFiltro) => {
+    setFiltros(filtros.filter((cadaFiltro) => cadaFiltro.coluna !== colunaDeFiltro));
+    setSelect([...select, colunaDeFiltro]);
+  };
+
+  const handleRemoveAllFilters = () => {
+    setSelect(options);
+    setFiltros([]);
+  };
+
+  // const handleClick = () => {
+  //   setOrderCollum({ column: orderCollum, sort: radio });
+  // };
 
   return (
     <div>
@@ -45,7 +61,6 @@ function Table() {
               value={ option }
             >
               {option}
-
             </option>
           ))}
 
@@ -72,7 +87,6 @@ function Table() {
           data-testid="value-filter"
           value={ valor }
           onChange={ (event) => (setValor(event.target.value)) }
-          // onChange={ (event) => (event.target.value === ''.trim() ? 0 : (setValor(parseFloat(event.target.value)))) }
         />
       </label>
 
@@ -80,9 +94,86 @@ function Table() {
         type="button"
         data-testid="button-filter"
         onClick={ () => handleFilter() }
+        style={ { fontWeight: 'bold' } }
       >
-        Filtrar
+        FILTRAR
       </button>
+
+      {filtros.map((filtro) => (
+        <span
+          key="filtro"
+          data-testid="filter"
+          style={ { marginLeft: '20px' } }
+        >
+          {/* population menor que 2000 */}
+          {` ${filtro.coluna} `}
+          {`${filtro.operador} `}
+          {`${filtro.valor}`}
+          <button
+            type="button"
+            onClick={ () => handleRemoveFilter(filtro.coluna) }
+            style={ { marginLeft: '3px' } }
+          >
+            X
+          </button>
+        </span>
+      ))}
+
+      {/* <label htmlFor="column-sort">
+        Ordenar:
+        <select
+          data-testid="column-sort"
+          value={ orderCollum }
+          onChange={ (event) => setOrderCollum(event.target.value) }
+        >
+          <option>population</option>
+          <option>orbital_period</option>
+          <option>rotation_period</option>
+          <option>surface_water</option>
+          <option>diameter</option>
+        </select>
+      </label>
+
+      <label htmlFor="column-sort-input-asc">
+        Ascendente
+        <input
+          type="radio"
+          name="ordenacao"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onClick={ ({ target: { value } }) => setRadio(value) }
+        />
+      </label>
+
+      <label htmlFor="column-sort-input-desc">
+        Descendente
+        <input
+          type="radio"
+          name="ordenacao"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onClick={ ({ target: { value } }) => setRadio(value) }
+        />
+      </label>
+
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => handleClick() }
+        style={ { fontWeight: 'bold' } }
+      >
+        ORDENAR
+      </button> */}
+
+      { filtros.length >= 1 ? (
+        <button
+          type="button"
+          onClick={ () => handleRemoveAllFilters() }
+          data-testid="button-remove-filters"
+          style={ { marginLeft: '80px' } }
+        >
+          Remover Filtros
+        </button>) : console.log('nada')}
 
       <table>
         <thead>
@@ -135,7 +226,7 @@ function Table() {
               .filter((item) => item.name.includes(valorDoContexto.inputText))
               .map((planeta) => (
                 <tr key={ planeta.name }>
-                  <td data-testid="planeta-name">{planeta.name}</td>
+                  <td data-testid="planet-name">{planeta.name}</td>
                   <td>{planeta.rotation_period}</td>
                   <td>{planeta.orbital_period}</td>
                   <td>{planeta.diameter}</td>
@@ -154,8 +245,6 @@ function Table() {
         </tbody>
       </table>
     </div>
-
   );
 }
-
 export default Table;
