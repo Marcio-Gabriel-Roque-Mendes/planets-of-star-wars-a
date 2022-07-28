@@ -8,7 +8,7 @@ const ProviderStarWars = ({ children }) => {
   const [inputText, setInputText] = useState('');
   const [filtros, setFiltros] = useState([]);
   const [data, setData] = useState([]);
-  const [order, setOrder] = useState({ column: 'population', sort: 'ASC' });
+  const [order, setOrder] = useState();
   // const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   const contextValue = { /* Objeto contextValue */
@@ -76,15 +76,17 @@ const ProviderStarWars = ({ children }) => {
   // }, [filtros]);
 
   useEffect(() => {
-    // const handleOrder = () => {
-    //   if (order.sort === 'ASC') {
-    //     order.column.sort((a, b) => a - b);
-    //   } if ((order.sort === 'DESC')) {
-    //     order.column.sort((a, b) => b - a);
-    //   }
-    // };
+    let dados = [...data];
 
-    let dados = data;
+    console.log('aconteceu');
+
+    if (order) {
+      if (order.sort === 'ASC') {
+        dados.sort((a, b) => Number(a[order.column]) - Number(b[order.column]));
+      } if ((order.sort === 'DESC')) {
+        dados.sort((a, b) => Number(b[order.column]) - Number(a[order.column]));
+      }
+    }
 
     filtros.forEach((filtro) => {
       if (filtro.operador === 'maior que') {
@@ -104,7 +106,7 @@ const ProviderStarWars = ({ children }) => {
       }
     });
     setArrayPlanetas(dados);
-  }, [filtros/* order */]);
+  }, [filtros, order]);
 
   return (
     <ContextStarWars.Provider value={ contextValue }>

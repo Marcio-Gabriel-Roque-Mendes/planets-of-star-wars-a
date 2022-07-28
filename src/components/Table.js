@@ -9,11 +9,11 @@ function Table() {
   const [operador, setOperador] = useState('maior que');
   const [valor, setValor] = useState(0);
   const [select, setSelect] = useState(options);
-  // const [orderCollum, setOrderCollum] = useState('population');
-  // const [radio, setRadio] = useState();
+  const [orderCollum, setOrderCollum] = useState('population');
+  const [radio, setRadio] = useState();
 
   const valorDoContexto = useContext(ContextStarWars);
-  const { setInputText, inputText, filtros, setFiltros, /* order, setOrder, */
+  const { setInputText, inputText, filtros, setFiltros, setOrder,
   } = valorDoContexto;
 
   const handleFilter = () => {
@@ -33,9 +33,9 @@ function Table() {
     setFiltros([]);
   };
 
-  // const handleClick = () => {
-  //   setOrderCollum({ column: orderCollum, sort: radio });
-  // };
+  const handleClick = () => {
+    setOrder({ column: orderCollum, sort: radio });
+  };
 
   return (
     <div>
@@ -119,7 +119,7 @@ function Table() {
         </span>
       ))}
 
-      {/* <label htmlFor="column-sort">
+      <label htmlFor="column-sort">
         Ordenar:
         <select
           data-testid="column-sort"
@@ -163,7 +163,7 @@ function Table() {
         style={ { fontWeight: 'bold' } }
       >
         ORDENAR
-      </button> */}
+      </button>
 
       { filtros.length >= 1 ? (
         <button
