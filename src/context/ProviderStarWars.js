@@ -82,9 +82,27 @@ const ProviderStarWars = ({ children }) => {
 
     if (order) {
       if (order.sort === 'ASC') {
-        dados.sort((a, b) => Number(a[order.column]) - Number(b[order.column]));
+        dados.sort((a, b) => {
+          if (a[order.column] === 'unknown') {
+            console.log('entrou nos testes', b[order.column]);
+            return false;
+          }
+          if (b[order.column] === 'unknown') {
+            console.log('entrou nos testes', a[order.column]);
+            return true;
+          }
+          return Number(a[order.column]) - Number(b[order.column]);
+        });
       } if ((order.sort === 'DESC')) {
-        dados.sort((a, b) => Number(b[order.column]) - Number(a[order.column]));
+        dados.sort((a, b) => {
+          if (a[order.column] === 'unknown') {
+            return true;
+          }
+          if (b[order.column] === 'unknown') {
+            return false;
+          }
+          return Number(b[order.column]) - Number(a[order.column]);
+        });
       }
     }
 
