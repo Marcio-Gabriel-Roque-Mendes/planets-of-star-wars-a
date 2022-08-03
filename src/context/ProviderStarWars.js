@@ -75,36 +75,41 @@ const ProviderStarWars = ({ children }) => {
   //   }
   // }, [filtros]);
 
-  useEffect(() => {
-    let dados = [...data];
+  let dados = [...data];
 
-    console.log('aconteceu');
+  const menosUm = -1;
 
-    if (order) {
-      if (order.sort === 'ASC') {
-        dados.sort((a, b) => {
-          if (a[order.column] === 'unknown') {
-            console.log('entrou nos testes', b[order.column]);
-            return false;
-          }
-          if (b[order.column] === 'unknown') {
-            console.log('entrou nos testes', a[order.column]);
-            return true;
-          }
-          return Number(a[order.column]) - Number(b[order.column]);
-        });
-      } if ((order.sort === 'DESC')) {
-        dados.sort((a, b) => {
-          if (a[order.column] === 'unknown') {
-            return true;
-          }
-          if (b[order.column] === 'unknown') {
-            return false;
-          }
-          return Number(b[order.column]) - Number(a[order.column]);
-        });
-      }
+  const ordenarASC = () => {
+    if (order && order.sort === 'ASC') {
+      dados.sort((a, b) => {
+        if (a[order.column] === 'unknown') {
+          return menosUm;
+        }
+        if (b[order.column] === 'unknown') {
+          return true;
+        }
+        return Number(a[order.column]) - Number(b[order.column]);
+      });
     }
+  };
+
+  const ordenarDESC = () => {
+    if (order && order.sort === 'DESC') {
+      dados.sort((a, b) => {
+        if (a[order.column] === 'unknown') {
+          return true;
+        }
+        if (b[order.column] === 'unknown') {
+          return menosUm;
+        }
+        return Number(b[order.column]) - Number(a[order.column]);
+      });
+    }
+  };
+
+  useEffect(() => {
+    // let dados = [...data]; tirado de dentro desse useEffect,
+    // para poder ser usado na funcao ordenar() tambem
 
     filtros.forEach((filtro) => {
       if (filtro.operador === 'maior que') {
@@ -124,6 +129,9 @@ const ProviderStarWars = ({ children }) => {
       }
     });
     setArrayPlanetas(dados);
+
+    ordenarASC();
+    ordenarDESC();
   }, [filtros, order]);
 
   return (
