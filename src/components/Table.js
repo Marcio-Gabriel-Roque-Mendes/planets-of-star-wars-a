@@ -173,7 +173,7 @@ function Table() {
           style={ { marginLeft: '80px' } }
         >
           Remover Filtros
-        </button>) : console.log('nada')}
+        </button>) : false}
 
       <table>
         <thead>
@@ -225,7 +225,7 @@ function Table() {
             valorDoContexto.arrayPlanetas
               .filter((item) => item.name.includes(valorDoContexto.inputText))
               .map((planeta) => (
-                <tr key={ planeta.name }>
+                <tr key={ planeta.name } data-testid="lines">
                   <td data-testid="planet-name">{planeta.name}</td>
                   <td>{planeta.rotation_period}</td>
                   <td>{planeta.orbital_period}</td>

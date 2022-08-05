@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from '../assets/renderWithRouter';
 
-describe('Tabela de planetas', () => {
+describe('Filtragem da tabela de planetas', () => {
   // beforeEach(() => )
   it('verifica se digita no primeiro input, o valor digitado filtra os nomes e renderiza',
     async () => {
@@ -26,75 +26,64 @@ describe('Tabela de planetas', () => {
   const filtroOperador = 'comparison-filter';
   const filtroValor = 'value-filter';
 
-  it('verifica se filtra corretamente, aplicando: Periodo oribital, maior que 5000',
+  it.only('verifica se o filtro maior que tem o retorno desejado',
     async () => {
-      const { debug } = renderWithRouter(<App />);
-      await screen.findByTestId('option-rotation_period');
-      const filtroPeriodoRotacional = await screen.findByTestId(filtroColuna);
-      userEvent.type(filtroPeriodoRotacional, /rotation_period/i);
+      renderWithRouter(<App />);
+      const filtroPopulacao = await screen.findByTestId(filtroColuna)
+      userEvent.selectOptions(filtroPopulacao, 'population');
 
       const filtroMaiorQue = await screen.findByTestId(filtroOperador);
-      userEvent.type(filtroMaiorQue, /maior que/i);
+      userEvent.selectOptions(filtroMaiorQue, 'menor que');
 
-      const filtroValor5000 = await screen.findByTestId(filtroValor);
-      userEvent.type(filtroValor5000, '17');
+      const filtroValor4Bilhoes = await screen.findByTestId(filtroValor);
+      userEvent.type(filtroValor4Bilhoes, '2000');
 
       const botaoFiltrar = await screen.findByRole('button', { name: /filtrar/i });
       userEvent.click(botaoFiltrar);
 
-      const planetTatooine = await screen.findByRole('cell', { name: /tatooine/i });
-      expect(planetTatooine).toBeInTheDocument();
 
-      // cleanup();
-      // // Filtro 2
+      expect(await screen.findAllByTestId("lines")).toHaveLength(1)
+      
+      // await screen.findByTestId('option-rotation_period');
+      // const filtroPeriodoRotacional = await screen.findByTestId(filtroColuna);
+      // userEvent.type(filtroPeriodoRotacional, /rotation_period/i);
 
-      await screen.findByTestId('option-diameter');
-      const numeroDezMil = 10000;
-      const filtroDiametro = await screen.findByTestId(filtroColuna);
-      userEvent.type(filtroDiametro, /diameter/i);
+      // const qtdLinhas = await screen.findAllByTestId("linhas")
 
-      const filtroMenorQue = await screen.findByTestId(filtroOperador);
-      userEvent.type(filtroMenorQue, /menor que/i);
+      // const planetCoruscant = await screen.findByText(/Coruscant/i);
+      // const planetNaboo = await screen.findByText(/Naboo/i);
+      // const planetKamino = await screen.findByText(/Kamino/i);
 
-      const filtroValor10000 = await screen.findByTestId(filtroValor);
-      userEvent.type(filtroValor10000, numeroDezMil);
+      // expect(planetCoruscant).toBeInTheDocument();
+      // expect(planetNaboo).toBeInTheDocument();
+      // expect(planetKamino).toBeInTheDocument()
 
-      const filterButton = await screen.findByRole('button', { name: /filtrar/i });
-      userEvent.click(filterButton);
+    }
+  );
 
-      debug();
-      const coisa = await screen.findAllByTestId();
-      // const planetHoth = await screen.findByText(/hoth/i);
-      // expect(planetHoth).toBeInTheDocument();
+    // it('Teste 1',
+    // async () => {
+    //   const { debug } = renderWithRouter(<App />);
+    //   await screen.findByTestId('option-rotation_period');
+    //   const filtroPeriodoRotacional = await screen.findByTestId(filtroColuna);
+    //   userEvent.type(filtroPeriodoRotacional, /rotation_period/i);
 
-      // const planetDagobah = await screen.findByRole('cell', { name: /dagobah/i });
-      // expect(planetDagobah).toBeInTheDocument();
+    //   const filtroMaiorQue = await screen.findByTestId(filtroOperador);
+    //   userEvent.type(filtroMaiorQue, /maior que/i);
 
-      // const planetEndor = await screen.findByRole('cell', { name: /endor/i });
-      // expect(planetEndor).toBeInTheDocument();
+    //   const filtroValor5000 = await screen.findByTestId(filtroValor);
+    //   userEvent.type(filtroValor5000, '17');
 
-      // // cleanup();
+    //   const botaoFiltrar = await screen.findByRole('button', { name: /filtrar/i });
+    //   userEvent.click(botaoFiltrar);
 
-      // // // Filtro 3
-      // await screen.findByTestId('option-surface_water');
-      // const filtroSuperficeAquatica = await screen.findByTestId(filtroColuna);
-      // userEvent.type(filtroSuperficeAquatica, /surface_water/i);
+    //   const planetTatooine = await screen.findByRole('cell', { name: /tatooine/i });
+    //   expect(planetTatooine).toBeInTheDocument();
 
-      // const filtroIgualA = await screen.findByTestId(filtroOperador);
-      // userEvent.type(filtroIgualA, /igual a/i);
+     //     // // cleanup();
+    // });
 
-      // const filtroValor8 = await screen.findByTestId(filtroValor);
-      // userEvent.type(filtroValor8, '8');
 
-      // const buttonFilter = await screen.findByRole('button', { name: /filtrar/i });
-      // userEvent.click(buttonFilter);
-
-      // const dagobahPlanet = await screen.findByRole('cell', { name: /dagobah/i });
-      // expect(dagobahPlanet).toBeInTheDocument();
-
-      // const endorPlanet = await screen.findByRole('cell', { name: /endor/i });
-      // expect(endorPlanet).toBeInTheDocument();
-    });
   // it('Teste 2', async () => {
   //     renderWithRouter(<App />)
   //      await screen.findByTestId('option-diameter');
