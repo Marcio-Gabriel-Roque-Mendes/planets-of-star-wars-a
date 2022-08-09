@@ -21,6 +21,7 @@ function Table() {
     const filtroDisponiveis = select.filter((opcao) => opcao !== coluna);
     setSelect(filtroDisponiveis);
     setColuna(filtroDisponiveis[0]);
+    setValor(0);
   };
 
   const handleRemoveFilter = (colunaDeFiltro) => {
@@ -105,7 +106,6 @@ function Table() {
           data-testid="filter"
           style={ { marginLeft: '20px' } }
         >
-          {/* population menor que 2000 */}
           {` ${filtro.coluna} `}
           {`${filtro.operador} `}
           {`${filtro.valor}`}

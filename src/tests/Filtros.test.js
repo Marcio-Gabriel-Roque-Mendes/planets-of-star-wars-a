@@ -1,132 +1,200 @@
 import React from 'react';
-import { screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { cleanup, render, screen, act } from '@testing-library/react';
 import App from '../App';
-import renderWithRouter from '../assets/renderWithRouter';
+import userEvent from '@testing-library/user-event';
+import DadosMockagem from './DadosMockagem'
 
-describe('Filtragem da tabela de planetas', () => {
-  // beforeEach(() => )
-  it('verifica se digita no primeiro input, o valor digitado filtra os nomes e renderiza',
+//Teste com menor que, maior que e igual á no mesmo (it)
+
+describe('testa o componente Filters', () => {
+    beforeEach(async () => {
+        jest.spyOn(global, 'fetch');
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue(DadosMockagem)
+        })
+        await act(async () => {
+            render(<App />)
+        })
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+        cleanup();
+    });
+
+    it('verifica se ao digitar no primeiro filtro, o valor digitado filtra os nomes e renderiza',
     async () => {
-      renderWithRouter(<App />);
-      const planetCoruscant = await screen.findByText(/Coruscant/i);
+      const planetCoruscant = screen.getByText(/Coruscant/i);
 
       const inputDigiteAqui = screen.getByTestId('name-filter');
       userEvent.type(inputDigiteAqui, 'oo');
 
-      const planetTatooine = await screen.findByText(/Tatooine/i);
-      const planetNaboo = await screen.findByText(/Naboo/i);
+      const planetTatooine = screen.getByText(/Tatooine/i);
+      const planetNaboo = screen.getByText(/Naboo/i);
 
       expect(planetTatooine).toBeInTheDocument();
       expect(planetNaboo).toBeInTheDocument();
       expect(planetCoruscant).not.toBeInTheDocument();
     });
+    
+    const filtroColuna = 'column-filter';
+    const filtroOperador = 'comparison-filter';
+    const filtroValor = 'value-filter';
 
-  const filtroColuna = 'column-filter';
-  const filtroOperador = 'comparison-filter';
-  const filtroValor = 'value-filter';
-
-  it.only('verifica se o filtro maior que tem o retorno desejado',
+    it('verifica se o filtro maior que tem o retorno esperado',
     async () => {
-      renderWithRouter(<App />);
-      const filtroPopulacao = await screen.findByTestId(filtroColuna)
-      userEvent.selectOptions(filtroPopulacao, 'population');
+      // MAIORQUE
+      const filtroPeriodoOrbital = screen.getByTestId(filtroColuna)
+      userEvent.selectOptions(filtroPeriodoOrbital, 'orbital_period');
 
-      const filtroMaiorQue = await screen.findByTestId(filtroOperador);
-      userEvent.selectOptions(filtroMaiorQue, 'menor que');
+      const filtroMaiorQue = screen.getByTestId(filtroOperador);
+      userEvent.selectOptions(filtroMaiorQue, 'maior que');
 
-      const filtroValor4Bilhoes = await screen.findByTestId(filtroValor);
-      userEvent.type(filtroValor4Bilhoes, '2000');
+      const filtroPeloValor400 = screen.getByTestId(filtroValor);
+      userEvent.type(filtroPeloValor400, '400');
 
-      const botaoFiltrar = await screen.findByRole('button', { name: /filtrar/i });
+      const botaoFiltrar = screen.getByRole('button', { name: /filtrar/i });
       userEvent.click(botaoFiltrar);
 
+      const planetBespin = screen.getByText(/Bespin/i);
+      const planetEndor = screen.getByText(/Endor/i);
+      const planetHoth = screen.getByText(/Hoth/i);
+      const planetKamino = screen.getByText(/Kamino/i);
+      const planetYavin = screen.getByText(/Yavin/i);
 
-      expect(await screen.findAllByTestId("lines")).toHaveLength(1)
+      expect(planetBespin).toBeInTheDocument();
+      expect(planetEndor).toBeInTheDocument();
+      expect(planetHoth).toBeInTheDocument();
+      expect(planetKamino).toBeInTheDocument();
+      expect(planetYavin).toBeInTheDocument();
+
+    // MENOR QUE
+      const numeroVinteMil = '20000';
+      const filtroDiametro = screen.getByTestId(filtroColuna);
+      userEvent.selectOptions(filtroDiametro, 'diameter');
+    
+      const filtroMenorQue = screen.getByTestId(filtroOperador);
+      userEvent.selectOptions(filtroMenorQue, 'menor que');
+    
+      const filtroPeloValor = screen.getByTestId(filtroValor);
+      userEvent.type(filtroPeloValor, numeroVinteMil);
+      const filtroPeloValor2 = screen.getByTestId(filtroValor);
+      console.log(filtroPeloValor2.value);
+    
+      const filterButton = screen.getByRole('button', { name: /filtrar/i });
+      userEvent.click(filterButton);
+    
+      expect(planetEndor).toBeInTheDocument();
+      expect(planetHoth).toBeInTheDocument();
+      expect(planetKamino).toBeInTheDocument();
+      expect(planetYavin).toBeInTheDocument();
+
+      // IGUAL A
+      const filtroSuperficeAquatica = screen.getByTestId(filtroColuna)
+      userEvent.selectOptions(filtroSuperficeAquatica, 'surface_water')
+  
+      const filtroIgualA = screen.getByTestId(filtroOperador)
+      userEvent.selectOptions(filtroIgualA, 'igual a')
+  
+      const filtroPeloValor8 = screen.getByTestId(filtroValor)
+      userEvent.type(filtroPeloValor8, '8')
+  
+      const buttonFilter = screen.getByRole('button', {name: /filtrar/i})
+      userEvent.click(buttonFilter)
+  
+      const endorPlanet = screen.getByText(/Endor/i);
+      const yavinPlanet = screen.getByText(/Yavin/i);
+
+      expect(endorPlanet).toBeInTheDocument();
+      expect(yavinPlanet).toBeInTheDocument();
       
-      // await screen.findByTestId('option-rotation_period');
-      // const filtroPeriodoRotacional = await screen.findByTestId(filtroColuna);
-      // userEvent.type(filtroPeriodoRotacional, /rotation_period/i);
-
-      // const qtdLinhas = await screen.findAllByTestId("linhas")
-
-      // const planetCoruscant = await screen.findByText(/Coruscant/i);
-      // const planetNaboo = await screen.findByText(/Naboo/i);
-      // const planetKamino = await screen.findByText(/Kamino/i);
-
-      // expect(planetCoruscant).toBeInTheDocument();
-      // expect(planetNaboo).toBeInTheDocument();
-      // expect(planetKamino).toBeInTheDocument()
-
+      expect(screen.getByText(/orbital_period maior que 0400/i)).toBeInTheDocument();
+      expect(screen.getByText(/diameter menor que 020000/i)).toBeInTheDocument();
+      expect(screen.getByText(/surface_water igual a 08/i)).toBeInTheDocument();
+      
     }
   );
 
-    // it('Teste 1',
-    // async () => {
-    //   const { debug } = renderWithRouter(<App />);
-    //   await screen.findByTestId('option-rotation_period');
-    //   const filtroPeriodoRotacional = await screen.findByTestId(filtroColuna);
-    //   userEvent.type(filtroPeriodoRotacional, /rotation_period/i);
+  it('verifica se o botao de remove um filtro funciona conforme o esperado', 
+  () => {
+    const linhas = screen.getAllByTestId("lines")
+    expect(linhas).toHaveLength(10)
 
-    //   const filtroMaiorQue = await screen.findByTestId(filtroOperador);
-    //   userEvent.type(filtroMaiorQue, /maior que/i);
+    const filtroPeriodoDeRotacao = screen.getByTestId(filtroColuna);
+    userEvent.selectOptions(filtroPeriodoDeRotacao, 'rotation_period');
+    
+    const filtroMenorQue = screen.getByTestId(filtroOperador);
+    userEvent.selectOptions(filtroMenorQue, 'menor que');
+    
+    const filtroPeloValor = screen.getByTestId(filtroValor);
+    userEvent.type(filtroPeloValor, '20');
+    
+    const filterButton = screen.getByRole('button', { name: /filtrar/i });
+    userEvent.click(filterButton);
 
-    //   const filtroValor5000 = await screen.findByTestId(filtroValor);
-    //   userEvent.type(filtroValor5000, '17');
+    const lines = screen.getAllByTestId("lines")
+    expect(lines).toHaveLength(2)
 
-    //   const botaoFiltrar = await screen.findByRole('button', { name: /filtrar/i });
-    //   userEvent.click(botaoFiltrar);
+    const removeOneFilterButton = screen.getByRole('button', {name: /x/i});
+    userEvent.click(removeOneFilterButton);
 
-    //   const planetTatooine = await screen.findByRole('cell', { name: /tatooine/i });
-    //   expect(planetTatooine).toBeInTheDocument();
+    const QuntLinhas = screen.getAllByTestId("lines")
+    expect(QuntLinhas).toHaveLength(10)
+  })
 
-     //     // // cleanup();
-    // });
+it('verifica se o botao de remove todos os filtros funciona conforme o esperado', 
+() => {
+    const numeroDezMil = '10000';
+    const filtroDiametro = screen.getByTestId(filtroColuna);
+    userEvent.selectOptions(filtroDiametro, 'diameter');
 
+    const filtroMenorQue = screen.getByTestId(filtroOperador);
+    userEvent.selectOptions(filtroMenorQue, 'menor que');
 
-  // it('Teste 2', async () => {
-  //     renderWithRouter(<App />)
-  //      await screen.findByTestId('option-diameter');
-  // const numeroDezMil = 10000;
-  // const filtroDiametro = await screen.findByTestId(filtroColuna);
-  // userEvent.type(filtroDiametro, /diameter/i);
+    const filtroValor10000 = screen.getByTestId(filtroValor);
+    userEvent.type(filtroValor10000, numeroDezMil);
 
-  // const filtroMenorQue = await screen.findByTestId(filtroOperador);
-  // userEvent.type(filtroMenorQue, /menor que/i);
+    const filterButton = screen.getByRole('button', { name: /filtrar/i });
+    userEvent.click(filterButton);
+    
+    const planetDagobah = screen.getByText(/dagobah/i);
+    const planetHoth = screen.getByText(/hoth/i);
+    const planetEndor = screen.getByText(/endor/i);
 
-  // const filtroValor10000 = await screen.findByTestId(filtroValor);
-  // userEvent.type(filtroValor10000, numeroDezMil);
+    expect(planetHoth).toBeInTheDocument();
+    expect(planetDagobah).toBeInTheDocument();
+    expect(planetEndor).toBeInTheDocument();
 
-  // const filterButton = await screen.findByRole('button', { name: /filtrar/i });
-  // userEvent.click(filterButton);
+    const linhas = screen.getAllByTestId("lines")
+    expect(linhas).toHaveLength(3)
 
-  // const planetHoth = await screen.findByText(/hoth/i);
-  // expect(planetHoth).toBeInTheDocument();
+    const filtroSuperficeAquatica = screen.getByTestId(filtroColuna)
+    userEvent.selectOptions(filtroSuperficeAquatica, 'surface_water')
 
-  // const planetDagobah = await screen.findByRole('cell', { name: /dagobah/i });
-  // expect(planetDagobah).toBeInTheDocument();
+    const filtroIgualA = screen.getByTestId(filtroOperador)
+    userEvent.selectOptions(filtroIgualA, 'igual a')
 
-  // const planetEndor = await screen.findByRole('cell', { name: /endor/i });
-  // expect(planetEndor).toBeInTheDocument();
-  // })
-  // it('Teste 3', async () => {
-  //     renderWithRouter(<App />)
-  //     const filtroSuperficeAquatica = await screen.findByTestId(filtroColuna)
-  //     userEvent.type(filtroSuperficeAquatica, /surface_water/i)
+    const filtroValor8 = screen.getByTestId(filtroValor)
+    userEvent.type(filtroValor8, '8')
 
-  //     const filtroIgualA = await screen.findByTestId(filtroOperador)
-  //     userEvent.type(filtroIgualA, /igual a/i)
+    const buttonFilter = screen.getByRole('button', {name: /filtrar/i})
+    userEvent.click(buttonFilter)
 
-  //     const filtroValor8 = await screen.findByTestId(filtroValor)
-  //     userEvent.type(filtroValor8, '8')
+    const dagobahPlanet = screen.getByText(/dagobah/i);
+    expect(dagobahPlanet).toBeInTheDocument()
 
-  //     const buttonFilter = await screen.findByRole('button', {name: /filtrar/i})
-  //     userEvent.click(buttonFilter)
+    const endorPlanet = screen.getByText(/endor/i)
+    expect(endorPlanet).toBeInTheDocument()
 
-  //     const dagobahPlanet = await screen.findByRole('cell', {name: /dagobah/i})
-  //     expect(dagobahPlanet).toBeInTheDocument()
+    const lines = screen.getAllByTestId("lines")
+    expect(lines).toHaveLength(2)
 
-  //     const endorPlanet = await screen.findByRole('cell', {name: /endor/i})
-  //     expect(endorPlanet).toBeInTheDocument()
-  // })
-});
+    const botaoRemoveTodosFiltros = screen.getByRole('button', {name: /remover filtros/i})
+    userEvent.click(botaoRemoveTodosFiltros)
+
+    const QuntLinhas = screen.getAllByTestId("lines")
+    expect(QuntLinhas).toHaveLength(10)
+  })
+
+}
+)
