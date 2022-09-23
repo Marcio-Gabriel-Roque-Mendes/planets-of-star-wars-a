@@ -4,8 +4,6 @@ import App from '../App';
 import userEvent from '@testing-library/user-event';
 import DadosMockagem from './DadosMockagem'
 
-//Teste com menor que, maior que e igual á no mesmo (it)
-
 describe('testa o componente Filters', () => {
     beforeEach(async () => {
         jest.spyOn(global, 'fetch');
