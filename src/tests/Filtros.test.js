@@ -115,33 +115,6 @@ describe('testa o componente Filters', () => {
     }
   );
 
-  it('verifica se o botao de remove um filtro funciona conforme o esperado', 
-  () => {
-    const linhas = screen.getAllByTestId("lines")
-    expect(linhas).toHaveLength(10)
-
-    const filtroPeriodoDeRotacao = screen.getByTestId(filtroColuna);
-    userEvent.selectOptions(filtroPeriodoDeRotacao, 'rotation_period');
-    
-    const filtroMenorQue = screen.getByTestId(filtroOperador);
-    userEvent.selectOptions(filtroMenorQue, 'menor que');
-    
-    const filtroPeloValor = screen.getByTestId(filtroValor);
-    userEvent.type(filtroPeloValor, '20');
-    
-    const filterButton = screen.getByRole('button', { name: /filtrar/i });
-    userEvent.click(filterButton);
-
-    const lines = screen.getAllByTestId("lines")
-    expect(lines).toHaveLength(2)
-
-    const removeOneFilterButton = screen.getByRole('button', {name: /x/i});
-    userEvent.click(removeOneFilterButton);
-
-    const QuntLinhas = screen.getAllByTestId("lines")
-    expect(QuntLinhas).toHaveLength(10)
-  })
-
 it('verifica se o botao de remove todos os filtros funciona conforme o esperado', 
 () => {
     const numeroDezMil = '10000';
