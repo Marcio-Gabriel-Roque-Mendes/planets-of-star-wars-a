@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable max-lines */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { IoTrashOutline } from 'react-icons/io5';
 import ContextStarWars from '../context/ContextStarWars';
 import PlanetsImage from './Planets';
@@ -37,29 +37,27 @@ function Table() {
     setOrder({ column: orderCollum, sort: radio });
   };
 
+  useEffect(() => {
+    document.title = 'Star Wars Planets';
+  }, []);
+
   return (
+
     <div>
-
       <div className="title">
-
         <article className="articleLetter">
           a
         </article>
-
         <div className="imageTitle">
           <StarWarsImage />
         </div>
-
         <div className="planetsImage">
           <PlanetsImage />
         </div>
-
         <article className="articleLetter">
           a
         </article>
-
       </div>
-
       <div>
         <input
           data-testid="name-filter"
@@ -69,9 +67,7 @@ function Table() {
           className="search-input"
         />
       </div>
-
       <hr />
-
       <div className="filters-container">
         <label htmlFor="column-filter" className="column-select">
           Coluna:
@@ -93,7 +89,6 @@ function Table() {
             ))}
           </select>
         </label>
-
         <label htmlFor="comparison-filter" className="filter-element">
           Operador:
           <select
@@ -107,7 +102,6 @@ function Table() {
             <option value="igual a" className="background-select">igual a</option>
           </select>
         </label>
-
         <label htmlFor="value-filter" className="filter-element">
           Valor:
           <input
@@ -118,7 +112,6 @@ function Table() {
             className="number-input inputs"
           />
         </label>
-
         <button
           type="button"
           data-testid="button-filter"
@@ -128,7 +121,6 @@ function Table() {
         >
           FILTRAR
         </button>
-
         <label htmlFor="column-sort" className="filter-element">
           Ordenar:
           <select
@@ -137,11 +129,6 @@ function Table() {
             onChange={ (event) => setOrderCollum(event.target.value) }
             className="inputs"
           >
-            {/* <option>population</option>
-          <option>orbital_period</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
-          <option>diameter</option> */}
             <option className="background-select">population</option>
             <option className="background-select">orbital_period</option>
             <option className="background-select">rotation_period</option>
@@ -149,8 +136,6 @@ function Table() {
             <option className="background-select">diameter</option>
           </select>
         </label>
-
-        {/* <label htmlFor="column-sort-input-asc"> */}
         <label htmlFor="column-sort-input-asc" className="filter-element">
           Ascendente
           <input
@@ -161,8 +146,6 @@ function Table() {
             onClick={ ({ target: { value } }) => setRadio(value) }
           />
         </label>
-
-        {/* <label htmlFor="column-sort-input-desc"> */}
         <label htmlFor="column-sort-input-desc" className="filter-element">
           Descendente
           <input
@@ -174,7 +157,6 @@ function Table() {
             className="modelo"
           />
         </label>
-
         <button
           type="button"
           data-testid="column-sort-button"
@@ -185,7 +167,6 @@ function Table() {
           ORDENAR
         </button>
       </div>
-
       <div className="buttons-filter">
         {filtros.map((filtro) => (
           <span
@@ -210,7 +191,6 @@ function Table() {
             </button>
           </span>
         ))}
-
         { filtros.length >= 1 ? (
           <button
             type="button"
@@ -254,6 +234,9 @@ function Table() {
               <th>
                 Population
               </th>
+              {/* <th>
+              Films
+            </th> */}
               <th>
                 Created
               </th>
@@ -265,7 +248,6 @@ function Table() {
               </th>
             </tr>
           </thead>
-
           <tbody className="cabecalho-table">
             {
               valorDoContexto.arrayPlanetas
@@ -281,7 +263,6 @@ function Table() {
                     <td>{planeta.terrain}</td>
                     <td>{planeta.surface_water}</td>
                     <td>{planeta.population}</td>
-                    <td>{planeta.films}</td>
                     {/* <td>{planeta.films}</td> */}
                     <td>{planeta.created}</td>
                     <td>{planeta.edited}</td>
@@ -292,7 +273,6 @@ function Table() {
           </tbody>
         </table>
       </div>
-
     </div>
   );
 }
