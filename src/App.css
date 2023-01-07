@@ -10,18 +10,19 @@ body {
 .imageTitle{
   margin-left: 10px;
   margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .planetsImage {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .articleLetter {
   color: black;
 }
+
 .search-input {
-margin-left: 550px;
+margin-left: 600px;
 width: 200px;
 text-align: center;
 margin-top: 20px;
@@ -30,8 +31,6 @@ text-transform: uppercase;
 border-radius: 4px;
 box-shadow: 0px;
 }
-
-
 .search-input:focus::placeholder{
   color: whitesmoke;
 }
