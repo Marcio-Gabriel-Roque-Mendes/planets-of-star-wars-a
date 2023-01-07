@@ -4,8 +4,6 @@ import App from '../App';
 import userEvent from '@testing-library/user-event';
 import DadosMockagem from './DadosMockagem'
 
-//Teste com menor que, maior que e igual á no mesmo (it)
-
 describe('testa o componente Filters', () => {
     beforeEach(async () => {
         jest.spyOn(global, 'fetch');
@@ -43,7 +41,7 @@ describe('testa o componente Filters', () => {
 
     it('verifica se o filtro maior que tem o retorno esperado',
     async () => {
-      // MAIORQUE
+      // MAIOR QUE
       const filtroPeriodoOrbital = screen.getByTestId(filtroColuna)
       userEvent.selectOptions(filtroPeriodoOrbital, 'orbital_period');
 

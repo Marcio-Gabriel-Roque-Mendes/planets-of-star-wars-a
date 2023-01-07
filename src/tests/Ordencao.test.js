@@ -4,6 +4,7 @@ import App from '../App';
 import userEvent from '@testing-library/user-event';
 import DadosMockagem from './DadosMockagem'
 
+
 describe('testa o componente Filters', () => {
     beforeEach(async () => {
         jest.spyOn(global, 'fetch');

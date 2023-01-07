@@ -1,12 +1,16 @@
+
 body {
   background-color: rgba(25, 25, 25, 0.545);
   font-family: Roboto, Helvetica, Arial, sans-serif;;
 }
+
 .title {
   background-color: black;
   color: aliceblue  ;
   text-align: center;
+
 }
+
 .imageTitle{
   margin-left: 10px;
   margin-top: 40px;
@@ -27,27 +31,32 @@ width: 200px;
 text-align: center;
 margin-top: 20px;
 margin-bottom: 10px;
-text-transform: uppercase;
 border-radius: 4px;
 box-shadow: 0px;
 }
+
+
 .search-input:focus::placeholder{
   color: whitesmoke;
 }
+
 .column-select {
   margin-left: 15px;
   color: rgb(255, 196, 0);
 }
+
 .filters-container {
   margin-left: 25px;
   margin-top: 25px;
   color: rgb(203 213 225);
   font-weight: bold;
 }
+
 .filter-element {
   margin-left: 25px;
   color: rgb(255, 196, 0);
 }
+
 .inputs {
   margin-left: 5px;
   border: 0;
@@ -57,18 +66,22 @@ box-shadow: 0px;
   color: blanchedalmond;
   font-weight: bold ;
 }
+
 .inputs:hover {
   font-weight: bold;
   color: black;
 }
+
 .inputs:active {
   font-weight: bold;
   color: black;
   /* background-color: grey; */
 }
+
 .background-select{
   background-color: rgba(25, 25, 25, 0.553);
 }
+
 .button-filter {
   margin-left: 12px;
   text-transform: uppercase;
@@ -78,39 +91,48 @@ box-shadow: 0px;
   background-color: rgba(0, 0, 0, 0.212);
   padding: 10px
 } 
+
 .button-filter:hover {
   background-color: rgb(255, 200, 0);
   color: black;
 }
+
 .number-input {
   width: 115px;
 }
+
 .remove-button {
     width: 120px;
     text-align: center;
 }
+
 .buttons-filter {
   margin-left: 400px;
   margin-top: 25px;
 }
+
 .table-container {
   margin-left: 25px;
   margin-top: 30px
 }
+
 .cabecalho-table {
   background-color: black;
   align-items: flex-start;
   color: aliceblue;
 }
+
 .body-table {
   background-color: rgb(65, 63, 63);  
   color: aliceblue;
 }
+
 .films-width {
   width: 50px;
 }
+
+
 th, td {
   padding-left: 15px;
   padding-right: 15px;
-  /* margin-left: 60px; */
 }
