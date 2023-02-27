@@ -1,4 +1,9 @@
 # Star Wars Planets :milky_way:
+
+## :clapper: Prévia da aplicação rodando:
+https://user-images.githubusercontent.com/99992471/210674434-09c450e1-dd8a-41de-81c9-114cccdd1961.mp4
+
+
 ## ✏ Sobre o projeto
 
 O objetivo desse projeto construído com componentes funcionais é desenvolver uma aplicação que contenha uma lista com filtros de planetas do universo de Star Wars usando <strong/>Context API</strong> e <strong/>Hooks</strong> para controlar os estados globais. :globe_with_meridians:
@@ -62,10 +67,6 @@ npm run test filtros.test.js
 src/tests
 ```
 ![Captura de tela de 2023-01-04 18-54-36](https://user-images.githubusercontent.com/99992471/210657274-f363a868-3b15-4e12-94aa-b7ee87af18a5.png)
-
-## Prévia da aplicação rodando:
-
-https://user-images.githubusercontent.com/99992471/210674434-09c450e1-dd8a-41de-81c9-114cccdd1961.mp4
 
 ## Desenvolvido por: 
 Marcio Gabriel Roque Mendes
